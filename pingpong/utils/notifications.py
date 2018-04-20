@@ -5,6 +5,7 @@ from pingpong.app import app as context
 from pingpong.decorators.Async import async
 from pingpong.services.OfficeService import OfficeService
 import requests
+import json
 import threading
 
 officeService = OfficeService()
@@ -40,11 +41,10 @@ def mailFeedback(name, email, message):
 	html = "<h2>Ping Pong App Feedback</h2><p>Name: {}<br />Email: {}<p><p>{}</p>".format(name, email, message)
 	mail(subject, body, html)
 
-def send(message, officeIds):
-	app.logger.info("Skype message being sent %s", message)
-	url = app.config["SKYPE_URL"]
-	recipients = getRecipients(officeIds)
-	doSend(app, url, message, recipients)
+def send(message):
+	app.logger.info("Teams message being sent %s", message)
+	url = app.config["TEAMS_WEBHOOK_URL"]
+	doSend(url, message)
 
 def mail(subject, body, html):
 	sender = (app.config["MAIL_FROM_NAME"], app.config["MAIL_FROM_EMAIL"])
@@ -67,8 +67,20 @@ def mail(subject, body, html):
 	doMail(mail, messages)
 
 @async
-def doSend(app, url, message, recipients):
-	requests.post(url, data = { "message": message, "recipients": recipients })
+def doSend(url, message):
+
+	headers = { "Content-Type" : "application/json" }
+
+	data = {
+		"@type": "MessageCard",
+		"@context": "http://schema.org/extensions",
+		"text": message,
+		"themeColor": "E81123",
+	}
+
+	data = json.dumps(data)
+
+	requests.post(url, data = data, headers = headers)
 
 @async
 def doMail(mail, messages):

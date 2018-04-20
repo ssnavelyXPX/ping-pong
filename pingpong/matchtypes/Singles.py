@@ -196,7 +196,7 @@ class Singles(BaseMatch):
 
 		message = '<a href="{}matches/{}">{} is playing {} in a best of {}</a>'.format(request.url_root, match.id, player1.name, player2.name, match.numOfGames)
 
-		notifications.send(message, match.officeId)
+		notifications.send(message)
 
 	def playAgain(self, match, numOfGames, persistTeams):
 		game = match.games[0]
@@ -217,19 +217,19 @@ class Singles(BaseMatch):
 
 		message = "<b>{}</b> defeated {}, {} - {}".format(winnerPlayer.name, losingPlayer.name, winningSets, losingSets)
 
-		winnerScores = "\n"
-		loserScores = "\n"
+		winnerScores = "<br>"
+		loserScores = "<br>"
 
 		for game in match.games:
 			if game.completedAt == None:
 				continue
 
 			if game.winner == winningTeam.id:
-				winnerScores += "<b>{}</b> \t".format(game.getFormattedWinnerScore())
-				loserScores += "{} \t".format(game.getFormattedLoserScore())
+				winnerScores += "<b>{}</b> &emsp;".format(game.getFormattedWinnerScore())
+				loserScores += "{} &emsp;".format(game.getFormattedLoserScore())
 			else:
-				winnerScores += "{} \t".format(game.getFormattedLoserScore())
-				loserScores += "<b>{}</b> \t".format(game.getFormattedWinnerScore())
+				winnerScores += "{} &emsp;".format(game.getFormattedLoserScore())
+				loserScores += "<b>{}</b> &emsp;".format(game.getFormattedWinnerScore())
 
 		elo = "({}, {}{})"
 		winnerElo = leaderboardService.eloResult(match.officeId, match.id, winnerPlayer.id)
@@ -245,6 +245,6 @@ class Singles(BaseMatch):
 		if loserElo != None:
 			message += elo.format(int(round(loserElo["current"])), "+" if loserElo["change"] > 0 else "", int(round(loserElo["change"])))
 
-		message += '\n<a href="{}leaderboard/singles">Leaderboard Standings</a>'.format(request.url_root)
+		message += '<br><a href="{}leaderboard/singles">Leaderboard Standings</a>'.format(request.url_root)
 
-		notifications.send(message, match.officeId)
+		notifications.send(message)

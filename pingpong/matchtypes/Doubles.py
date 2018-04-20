@@ -253,7 +253,7 @@ class Doubles(BaseMatch):
 
 		message = '<a href="{}matches/{}">{} and {} are playing {} and {} in a best of {}</a>'.format(request.url_root, match.id, t1p1.name, t1p2.name, t2p1.name, t2p2.name, match.numOfGames)
 
-		notifications.send(message, match.officeId)
+		notifications.send(message)
 
 	def playAgain(self, match, numOfGames, randomize):
 		game = match.games[0]
@@ -278,23 +278,23 @@ class Doubles(BaseMatch):
 
 		message = "<b>{}</b> and <b>{}</b> defeated {} and {}, {} - {}".format(winnerPlayer1.name, winnerPlayer2.name, losingPlayer1.name, losingPlayer2.name, winningSets, losingSets)
 
-		winnerScores = "\n"
-		loserScores = "\n"
+		winnerScores = "<br>"
+		loserScores = "<br>"
 
 		for game in match.games:
 			if game.completedAt == None:
 				continue
 
 			if game.winner == winningTeam.id:
-				winnerScores += "<b>{}</b> \t".format(game.getFormattedWinnerScore())
-				loserScores += "{} \t".format(game.getFormattedLoserScore())
+				winnerScores += "<b>{}</b> &emsp;".format(game.getFormattedWinnerScore())
+				loserScores += "{} &emsp;".format(game.getFormattedLoserScore())
 			else:
-				winnerScores += "{} \t".format(game.getFormattedLoserScore())
-				loserScores += "<b>{}</b> \t".format(game.getFormattedWinnerScore())
+				winnerScores += "{} &emsp;".format(game.getFormattedLoserScore())
+				loserScores += "<b>{}</b> &emsp;".format(game.getFormattedWinnerScore())
 
 		message += winnerScores
 		message += loserScores
 
-		message += '\n<a href="{}leaderboard/doubles">Leaderboard Standings</a>'.format(request.url_root)
+		message += '<br><a href="{}leaderboard/doubles">Leaderboard Standings</a>'.format(request.url_root)
 
-		notifications.send(message, match.officeId)
+		notifications.send(message)

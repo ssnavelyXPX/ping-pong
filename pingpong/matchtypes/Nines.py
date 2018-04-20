@@ -180,7 +180,7 @@ class Nines(BaseMatch):
 		player4 = match.teams[3].players[0]
 
 		message = '<a href="{}matches/{}">{}, {}, {} and {} are playing nines</a>'.format(request.url_root, match.id, player1.name, player2.name, player3.name, player4.name)
-		notifications.send(message, match.officeId)
+		notifications.send(message)
 
 	def playAgain(self, match, numOfGames, randomize):
 		game = match.games[0]
@@ -229,8 +229,8 @@ class Nines(BaseMatch):
 		message = "<b>{} ({})</b> defeated {}, {}, and {} in Nines".format(player1.name, winnerPoints, player2.name, player3.name, player4.name)
 
 		if winnerPoints == 9:
-			message += "\n{} played a perfect match, but nobody really cares...".format(player1.name)
+			message += "<br>{} played a perfect match, but nobody really cares...".format(player1.name)
 
-		message += '\n<a href="{}leaderboard/nines">Leaderboard Standings</a>'.format(request.url_root)
+		message += '<br><a href="{}leaderboard/nines">Leaderboard Standings</a>'.format(request.url_root)
 
-		notifications.send(message, match.officeId)
+		notifications.send(message)

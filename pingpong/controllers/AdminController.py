@@ -37,7 +37,7 @@ def send_message():
 	officeIds = request.form.getlist("officeId")
 
 	if message != None and len(message) > 0 and len(officeIds) > 0:
-		notifications.send(message, officeIds)
+		notifications.send(message)
 		flash("Message has been sent.", "success")
 	else:
 		flash("Message was malformed and was not be sent.", "danger")
